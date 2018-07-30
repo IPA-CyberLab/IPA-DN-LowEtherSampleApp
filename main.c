@@ -116,7 +116,6 @@ void main_loop_thread(THREAD *thread, void *param)
 						{
 							// This is TCP SSH packet
 							is_ssh = true;
-							return;
 						}
 					}
 
