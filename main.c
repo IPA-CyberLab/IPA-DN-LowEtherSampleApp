@@ -79,14 +79,14 @@ void TestMain(char *cmd)
 	bool first = true;
 	bool exit_now = false;
 
-	Print("Test Program\n");
+	Print("nativeapp Test Program\n");
 
 #ifdef	OS_WIN32
 	MsSetEnableMinidump(false);
 #endif	// OS_WIN32
 	while (true)
 	{
-		Print("TEST>");
+		Print("nativeapp>");
 		if (first && StrLen(cmd) != 0 && g_memcheck == false)
 		{
 			first = false;
