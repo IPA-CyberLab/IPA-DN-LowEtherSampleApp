@@ -5,53 +5,53 @@ Linux 上での低レベル Ethernet フレームの送受信のサンプル
 Linux 上で gcc 等のビルドツールおよび必要なライブラリを以下のようにインストールしてください。
 
 ・ CentOS の場合
-# yum -y groupinstall "Development Tools"
-# yum -y install readline-devel ncurses-devel openssl-devel git
+`# yum -y groupinstall "Development Tools"`
+`# yum -y install readline-devel ncurses-devel openssl-devel git`
 
 ・ Ubuntu, Debian の場合
-# apt-get -y install build-essential libncurses5-dev libreadline-dev libssl-dev openssl git
+`# apt-get -y install build-essential libncurses5-dev libreadline-dev libssl-dev openssl git`
 
 ■ サンプルソースコードの取得
 Git から以下のとおり取得してください。
 
-# git clone --recursive https://github.com/IPA-CyberLab/IPA-DN-LowEtherSampleApp.git
+`# git clone --recursive https://github.com/IPA-CyberLab/IPA-DN-LowEtherSampleApp.git`
 
 ■ サンプルソースコードのビルド
 Git で取得したディレクトリに移動します。
-# cd IPA-DN-LowEtherSampleApp
+`# cd IPA-DN-LowEtherSampleApp`
 
 ビルドします。
-# make
+`# make`
 
 bin/lowether という実行可能ファイルが生成されたことを確認します。
-# ls -la bin/lowether
+`# ls -la bin/lowether`
 
 ■ サンプルの実行
 まず引数を付けずに起動してみます。
 
-# bin/lowether
-IPA-DN-LowEtherSampleApp by dnobori
---- List of available Ethernet adapters ---
-NIC #0: eth0
-  description: eth0
+    # bin/lowether
+    IPA-DN-LowEtherSampleApp by dnobori
+    --- List of available Ethernet adapters ---
+    NIC #0: eth0
+      description: eth0
 
 上記のように、システム上で利用可能な Ethernet アダプタの名前一覧が表示されます。上記の例では、「eth0」という 1 枚の NIC が存在しています。
 
 次に引数を付けて実行します。
-# bin/lowether eth0
+`# bin/lowether eth0`
 
 これでプログラムの動作が開始されます。
 
 Ethernet フレームを受信したら、
 
-[Tick: 5340] [RECV 60 bytes] 00 11 22 33 ... (16 進ダンプ)
+`[Tick: 5340] [RECV 60 bytes] 00 11 22 33 ... (16 進ダンプ)`
 
 のように表示されます。Tick の値はプログラム起動時からの 1ms 単位の経過時間です。
 
 1 秒間に 1 回、サンプルの ARP フレームを送信します。
 フレームを送信したときは、以下のように表示されます。
 
-[Tick: 2053] [SEND 42 bytes] FF FF FF FF ... (16 進ダンプ)
+`[Tick: 2053] [SEND 42 bytes] FF FF FF FF ... (16 進ダンプ)`
 
 ■ このプログラムの解説
 main.c にすべての重要な処理が記載されています。
