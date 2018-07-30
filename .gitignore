@@ -1,0 +1,7 @@
+.vs/
+bin/*.exe
+bin/nativeapp
+obj/
+*.ilk
+*.dmp
+
