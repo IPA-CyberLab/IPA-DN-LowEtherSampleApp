@@ -27,7 +27,7 @@
     <ClCompile Include="nativelib\nativelib_src\srclib_win32.cpp">
       <Filter>Source Files\nativelib</Filter>
     </ClCompile>
-    <ClCompile Include="nativeapp.c">
+    <ClCompile Include="lowether.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="temp.c">
@@ -41,7 +41,7 @@
     <ClInclude Include="project.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="nativeapp.h">
+    <ClInclude Include="lowether.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="project_types.h">

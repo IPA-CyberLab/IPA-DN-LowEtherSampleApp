@@ -9,7 +9,7 @@
 
 #include <nativelib.h>
 
-#include "nativeapp.h"
+#include "lowether.h"
 
 
 // Process starting function
@@ -79,14 +79,14 @@ void TestMain(char *cmd)
 	bool first = true;
 	bool exit_now = false;
 
-	Print("nativeapp Test Program\n");
+	Print("lowether Test Program\n");
 
 #ifdef	OS_WIN32
 	MsSetEnableMinidump(false);
 #endif	// OS_WIN32
 	while (true)
 	{
-		Print("nativeapp>");
+		Print("lowether>");
 		if (first && StrLen(cmd) != 0 && g_memcheck == false)
 		{
 			first = false;
@@ -213,9 +213,9 @@ int main(int argc, char *argv[])
 	{
 		// Service mode
 #ifdef OS_WIN32
-		return MsService("NATIVEAPP", StartProcess, StopProcess, 0, argv[1]);
+		return MsService("LOWETHER", StartProcess, StopProcess, 0, argv[1]);
 #else // OS_WIN32
-		return UnixService(argc, argv, "nativeapp", StartProcess, StopProcess);
+		return UnixService(argc, argv, "lowether", StartProcess, StopProcess);
 #endif // OS_WIN32
 
 	}

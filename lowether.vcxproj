@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="nativeapp.h" />
-    <ClInclude Include="nativeapp_types.h" />
+    <ClInclude Include="lowether.h" />
+    <ClInclude Include="lowether_types.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="nativelib\nativelib_src\nativelib.h" />
     <ClInclude Include="temp.h" />
@@ -44,7 +44,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{003891C0-0D35-4C1C-B7F9-215B118482D8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>nativeapp</RootNamespace>
+    <RootNamespace>lowether</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -98,25 +98,25 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\</OutDir>
     <IntDir>$(SolutionDir)obj\obj\$(PlatformName)_$(Configuration)\</IntDir>
-    <TargetName>nativeapp_$(PlatformShortName)</TargetName>
+    <TargetName>lowether_$(PlatformShortName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\</OutDir>
     <IntDir>$(SolutionDir)obj\obj\$(PlatformName)_$(Configuration)\</IntDir>
-    <TargetName>nativeapp_$(PlatformShortName)</TargetName>
+    <TargetName>lowether_$(PlatformShortName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\</OutDir>
     <IntDir>$(SolutionDir)obj\obj\$(PlatformName)_$(Configuration)\</IntDir>
-    <TargetName>nativeapp_$(PlatformShortName)</TargetName>
+    <TargetName>lowether_$(PlatformShortName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\</OutDir>
     <IntDir>$(SolutionDir)obj\obj\$(PlatformName)_$(Configuration)\</IntDir>
-    <TargetName>nativeapp_$(PlatformShortName)</TargetName>
+    <TargetName>lowether_$(PlatformShortName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

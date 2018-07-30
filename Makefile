@@ -28,7 +28,7 @@ OBJS=$(addprefix obj/obj/linux/,$(patsubst %.c,%.o,$(SRCS)))
 # Build Action
 default:	build
 
-build:	$(OBJECTS_NATIVELIB) bin/nativeapp
+build:	$(OBJECTS_NATIVELIB) bin/lowether
 
 obj/obj/linux/nativelib.o: nativelib/nativelib_src/nativelib.c $(HEADERS_NATIVELIB)
 	@mkdir -p obj/obj/linux/
@@ -38,12 +38,12 @@ obj/obj/linux/nativelib.o: nativelib/nativelib_src/nativelib.c $(HEADERS_NATIVEL
 obj/obj/linux/%.o: %.c
 	$(CC) $(OPTIONS_COMPILE) -c $< -o $@
 
-bin/nativeapp: obj/obj/linux/nativelib.o $(HEADERS_NATIVELIB) $(OBJECTS_NATIVELIB) $(OBJS)
-	$(CC) obj/obj/linux/nativelib.o $(OBJS) $(OPTIONS_LINK) -o bin/nativeapp
+bin/lowether: obj/obj/linux/nativelib.o $(HEADERS_NATIVELIB) $(OBJECTS_NATIVELIB) $(OBJS)
+	$(CC) obj/obj/linux/nativelib.o $(OBJS) $(OPTIONS_LINK) -o bin/lowether
 
 clean:
 	-rm -f obj/obj/linux/*.o
-	-rm -f bin/nativeapp
+	-rm -f bin/lowether
 
 help:
 	@echo "make [DEBUG=YES]"
