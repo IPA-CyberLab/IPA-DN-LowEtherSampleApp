@@ -9,7 +9,7 @@
 #include <errno.h>
 
 #include <nativelib.h>
-#include "project.h"
+#include "nativeapp.h"
 
 void Temp_TestFunction(char *tmp)
 {

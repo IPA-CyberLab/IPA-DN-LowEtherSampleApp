@@ -28,7 +28,7 @@
   <ItemGroup>
     <ClCompile Include="main.c" />
     <ClCompile Include="nativelib\nativelib_src\nativelib.c" />
-    <ClCompile Include="nativelib\nativelib_src\srclib_win32.cpp">
+    <ClCompile Include="nativelib\nativelib_src\nativelib_win32.cpp">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCpp</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsCpp</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>

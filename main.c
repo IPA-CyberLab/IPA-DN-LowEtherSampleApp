@@ -8,7 +8,8 @@
 #include <errno.h>
 
 #include <nativelib.h>
-#include "main.h"
+
+#include "nativeapp.h"
 
 
 // Process starting function
