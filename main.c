@@ -84,7 +84,7 @@ void main_loop_thread(THREAD *thread, void *param)
 		// SAMPLE: Receive Ethernet frames
 		while (true)
 		{
-			UCHAR *recv_packet;
+			void *recv_packet;
 			UINT size = EthGetPacket(eth, &recv_packet);
 
 			if (size == 0)
@@ -100,10 +100,33 @@ void main_loop_thread(THREAD *thread, void *param)
 			}
 			else
 			{
-				// An Ethernet packet is arrived.
-				BinToStrEx(tmpstr, sizeof(tmpstr), recv_packet, size);
-				Print("[Tick: %I64u] [RECV %u bytes] %s\n", now, size, tmpstr);
-				Free(recv_packet);
+				// SAMPLE: An Ethernet packet is arrived.
+				// buffer: recv_packet, size: size
+				bool is_ssh = false;
+
+				// Parse the Ethernet frame
+				PKT *pkt = ParsePacket(recv_packet, size);
+
+				if (pkt->TypeL4 == L4_TCP)
+				{
+					if (pkt->L4.TCPHeader->SrcPort == Endian16(22) ||
+						pkt->L4.TCPHeader->DstPort == Endian16(22))
+					{
+						// This is TCP SSH packet
+						is_ssh = true;
+					}
+				}
+
+				FreePacket(pkt); // Free parsed packet data
+
+				// Do not print SSH packet because it might cause infinite loop when
+				// the program is running through a SSH terminal session.
+				if (is_ssh == false)
+				{
+					BinToStrEx(tmpstr, sizeof(tmpstr), recv_packet, size);
+					Print("[Tick: %I64u] [RECV %u bytes] %s\n", now, size, tmpstr);
+					Free(recv_packet);
+				}
 			}
 		}
 	}
