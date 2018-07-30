@@ -1,7 +1,10 @@
-// Types
-struct TEST_TYPE
+// Main loop thread parameter
+struct MAIN_LOOP_THREAD_PARAM
 {
-	UINT Test;
+	ETH *Eth;
+	bool Halt;
+	CANCEL *Cancel;
+	UCHAR MyRandomMacAddress[6];
 };
 
 // Functions

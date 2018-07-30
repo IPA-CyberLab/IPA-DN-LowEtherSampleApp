@@ -11,214 +11,220 @@
 
 #include "lowether.h"
 
-
-// Process starting function
-void StartProcess()
+// Main loop thread
+void main_loop_thread(THREAD *thread, void *param)
 {
-	// Start the server
-	Debug("StartProcess() Begin.\n");
+	MAIN_LOOP_THREAD_PARAM *p = (MAIN_LOOP_THREAD_PARAM *)param;
+	ETH *eth = p->Eth;
+	INTERRUPT_MANAGER *interrupt;
+	char tmpstr[MAX_SIZE];
 
-	Debug("StartProcess() End.\n");
-}
+	UINT64 sample_send_frame_last_tick = 0;
+	UINT64 sample_send_frame_interval = 1000;
 
-// Process termination function
-void StopProcess()
-{
-	// Stop the server
-	Debug("StopProcess() Begin.\n");
+	interrupt = NewInterruptManager();
 
-	Debug("StopProcess() End.\n");
-}
-
-// Service test
-void service_test(UINT num, char **arg)
-{
-	Print("Starting...\n");
-	StartProcess();
-
-	Print("Service started.\n");
-	Print("Press Enter key to stop the service.\n");
-
-	GetLine(NULL, 0);
-
-	Print("Stopping...\n");
-	StopProcess();
-	Print("Service stopped.\n");
-}
-
-// Test function definition list
-void test(UINT num, char **arg)
-{
-	if (true)
+	while (p->Halt == false)
 	{
-		Print("Test! %u\n", IsX64());
-
-		Temp_TestFunction("Nekosan");
-		return;
-	}
-}
-
-typedef void (TEST_PROC)(UINT num, char **arg);
-
-typedef struct TEST_LIST
-{
-	char *command_str;
-	TEST_PROC *proc;
-} TEST_LIST;
-
-TEST_LIST test_list[] =
-{
-	{ "test", test },
-	{ "ss", service_test },
-};
-
-// Test function
-void TestMain(char *cmd)
-{
-	char tmp[MAX_SIZE];
-	bool first = true;
-	bool exit_now = false;
-
-	Print("lowether Test Program\n");
-
-#ifdef	OS_WIN32
-	MsSetEnableMinidump(false);
-#endif	// OS_WIN32
-	while (true)
-	{
-		Print("lowether>");
-		if (first && StrLen(cmd) != 0 && g_memcheck == false)
+		UINT next_sleep_interval;
+		UINT64 now = Tick64();
+		
+		// SAMPLE: send an Ethernet frame with regular interval (1000ms)
+		if (now >= (sample_send_frame_last_tick + sample_send_frame_interval))
 		{
-			first = false;
-			StrCpy(tmp, sizeof(tmp), cmd);
-			exit_now = true;
-			Print("%s\n", cmd);
+			ARPV4_HEADER arpv4_header;
+			UCHAR ethernet_frame[6 + 6 + 2 + sizeof(ARPV4_HEADER)];
+
+			sample_send_frame_last_tick = now;
+
+			AddInterrupt(interrupt, sample_send_frame_last_tick + sample_send_frame_interval);
+
+			// SAMPLE: build an ARP packet
+			Zero(&arpv4_header, sizeof(arpv4_header));
+			arpv4_header.HardwareType = Endian16(ARP_HARDWARE_TYPE_ETHERNET);
+			arpv4_header.ProtocolType = Endian16(MAC_PROTO_IPV4);
+			arpv4_header.HardwareSize = 6;
+			arpv4_header.ProtocolSize = 4;
+			arpv4_header.Operation = Endian16(ARP_OPERATION_REQUEST);
+			Copy(arpv4_header.SrcAddress, p->MyRandomMacAddress, 6);
+			arpv4_header.SrcIP = StrToIP32("192.168.0.1");
+			arpv4_header.TargetIP = StrToIP32("192.168.0.2");
+
+			// SAMPLE: build an Ethernet frame
+			// Destination MAC address
+			ethernet_frame[0] = 0xff;
+			ethernet_frame[1] = 0xff;
+			ethernet_frame[2] = 0xff;
+			ethernet_frame[3] = 0xff;
+			ethernet_frame[4] = 0xff;
+			ethernet_frame[5] = 0xff;
+			// Source MAC address
+			Copy(&ethernet_frame[6], p->MyRandomMacAddress, 6);
+			// TPID
+			WRITE_USHORT(&ethernet_frame[12], MAC_PROTO_ARPV4);
+			// Payload
+			Copy(&ethernet_frame[14], &arpv4_header, sizeof(arpv4_header));
+
+			// Send the frame
+			BinToStrEx(tmpstr, sizeof(tmpstr), ethernet_frame, sizeof(ethernet_frame));
+			Print("[Tick: %I64u] [SEND %u bytes] %s\n", now, sizeof(ethernet_frame), tmpstr);
+
+			EthPutPacket(eth, Clone(ethernet_frame, sizeof(ethernet_frame)), sizeof(ethernet_frame));
 		}
-		else
+		
+		next_sleep_interval = GetNextIntervalForInterrupt(interrupt);
+
+		if (next_sleep_interval >= 1)
 		{
-			GetLine(tmp, sizeof(tmp));
+			// Enter the cpu into the sleep state until next frame will arrive or
+			// the earlier tick will elapsed
+			Select(NULL, next_sleep_interval, p->Cancel, NULL);
 		}
-		Trim(tmp);
-		if (StrLen(tmp) != 0)
+
+		// SAMPLE: Receive Ethernet frames
+		while (true)
 		{
-			UINT i, num;
-			bool b = false;
-			TOKEN_LIST *token = ParseCmdLine(tmp);
-			char *cmd = token->Token[0];
-			if (!StrCmpi(cmd, "exit") || !StrCmpi(cmd, "quit") || !StrCmpi(cmd, "q"))
+			UCHAR *recv_packet;
+			UINT size = EthGetPacket(eth, &recv_packet);
+
+			if (size == 0)
 			{
-				FreeToken(token);
+				// no more frames arrived
+				break;
+			}
+			else if (size == INFINITE)
+			{
+				// interface error.
+				Print("EthGetPacket: interface error.\n");
 				break;
 			}
 			else
 			{
-				num = sizeof(test_list) / sizeof(TEST_LIST);
-				for (i = 0;i < num;i++)
-				{
-					if (!StrCmpi(test_list[i].command_str, cmd))
-					{
-						char **arg = Malloc(sizeof(char *) * (token->NumTokens - 1));
-						UINT j;
-						for (j = 0;j < token->NumTokens - 1;j++)
-						{
-							arg[j] = CopyStr(token->Token[j + 1]);
-						}
-						test_list[i].proc(token->NumTokens - 1, arg);
-						for (j = 0;j < token->NumTokens - 1;j++)
-						{
-							Free(arg[j]);
-						}
-						Free(arg);
-						b = true;
-						Print("\n");
-						break;
-					}
-				}
-				if (b == false)
-				{
-					Print("Invalid Command: %s\n\n", cmd);
-				}
-			}
-			FreeToken(token);
-
-			if (exit_now)
-			{
-				break;
+				// An Ethernet packet is arrived.
+				BinToStrEx(tmpstr, sizeof(tmpstr), recv_packet, size);
+				Print("[Tick: %I64u] [RECV %u bytes] %s\n", now, size, tmpstr);
+				Free(recv_packet);
 			}
 		}
 	}
-	Print("Exiting...\n\n");
+
+	FreeInterruptManager(interrupt);
 }
 
 // Entry point
 int main(int argc, char *argv[])
 {
-	bool memchk = false;
-	UINT i;
-	char cmd[MAX_SIZE];
-	char *s;
-	bool is_service_mode = false;
+	char if_name[MAX_SIZE];
 
-	cmd[0] = 0;
-	if (argc >= 2)
+	SetHamMode();
+
+	InitMayaqua(false, true, argc, argv);
+	EnableProbe(false);
+	InitCedar();
+	SetHamMode();
+	InitEth();
+
+	Print("IPA-DN-LowEtherSampleApp by dnobori\n");
+
+	Zero(if_name, sizeof(if_name));
+
+	if (argc >= 2) StrCpy(if_name, sizeof(if_name), argv[1]);
+	StrCpy(if_name, sizeof(if_name), "Intel(R) PRO/1000 PT Quad Port LP Server Adapter (2) (ID=3073167373)");
+	if (IsEmptyStr(if_name))
 	{
-		char *second_arg = argv[1];
+		// Print the list of Ethernet adapters on the system currently running
+		TOKEN_LIST *t = GetEthList();
+		UINT i;
 
-		if (StrCmpi(second_arg, "start") == 0 || StrCmpi(second_arg, "stop") == 0 || StrCmpi(second_arg, "execsvc") == 0 || StrCmpi(second_arg, "help") == 0 ||
-			(second_arg[0] == '/' && StrCmpi(second_arg, "/memcheck") != 0))
-		{
-			// service mode
-			is_service_mode = true;
-		}
+		Print("--- List of available Ethernet adapters ---\n");
 
-		if (is_service_mode == false)
+		for (i = 0;i < t->NumTokens;i++)
 		{
-			for (i = 1;i < (UINT)argc;i++)
+			char *eth_name = t->Token[i];
+			wchar_t tmp2[MAX_SIZE];
+			char tmp[MAX_SIZE];
+			
+			Zero(tmp, sizeof(tmp));
+			Zero(tmp2, sizeof(tmp2));
+
+#ifdef OS_UNIX
+			EthGetInterfaceDescriptionUnix(eth_name, tmp, sizeof(tmp));
+			StrToUni(tmp2, sizeof(tmp2), tmp);
+#else  // OS_UNIX
+			GetEthNetworkConnectionName(tmp2, sizeof(tmp2), eth_name);
+#endif // OS_UNIX
+
+			if (UniIsEmptyStr(tmp2) == false)
 			{
-				s = argv[i];
-				if (s[0] == '/')
-				{
-					if (!StrCmpi(s, "/memcheck"))
-					{
-						memchk = true;
-					}
-				}
-				else
-				{
-					StrCpy(cmd, sizeof(cmd), &s[0]);
-				}
+				UniPrint(L"NIC #%u: %S\n  description: %s\n", i, eth_name, tmp2);
+			}
+			else
+			{
+				UniPrint(L"name: %S\n", eth_name);
 			}
 		}
-	}
 
-	if (is_service_mode == false)
-	{
-		// Test mode
-
-		//MayaquaMinimalMode();
-
-		SetHamMode();
-
-		InitMayaqua(memchk, true, argc, argv);
-		EnableProbe(false);
-		InitCedar();
-		SetHamMode();
-
-		TestMain(cmdline);
-
-		FreeCedar();
-		FreeMayaqua();
+		FreeToken(t);
 	}
 	else
 	{
-		// Service mode
-#ifdef OS_WIN32
-		return MsService("LOWETHER", StartProcess, StopProcess, 0, argv[1]);
-#else // OS_WIN32
-		return UnixService(argc, argv, "lowether", StartProcess, StopProcess);
-#endif // OS_WIN32
+		// Open the specified Ethernet adapter
+		ETH *eth;
+		
+		Print("Opening the device '%s' ...\n", if_name);
+		eth = OpenEth(if_name, false, false, NULL);
 
+		if (eth == NULL)
+		{
+			Print("Failed to open the device '%s'.\n", if_name);
+			Print("Please ensure that this process is running with the root privilege.");
+		}
+		else
+		{
+			MAIN_LOOP_THREAD_PARAM p;
+			THREAD *thread;
+			char mac_address_str[MAX_SIZE];
+
+			Zero(&p, sizeof(p));
+			p.Eth = eth;
+			p.Cancel = p.Eth->Cancel;
+
+			Rand(p.MyRandomMacAddress, 6);
+			p.MyRandomMacAddress[0] = 0x00;
+			p.MyRandomMacAddress[1] = 0xAC;
+
+			MacToStr(mac_address_str, sizeof(mac_address_str), p.MyRandomMacAddress);
+
+			Print("MyRandomMacAddress: %s\n", mac_address_str);
+
+			AddRef(p.Cancel->ref);
+
+			thread = NewThread(main_loop_thread, &p);
+
+			Print("Press Enter key to exit the process.\n");
+
+			GetLine(NULL, 0);
+
+			Print("Stoping the main loop thread...\n");
+
+			p.Halt = true;
+
+			Cancel(p.Cancel);
+
+			WaitThread(thread, INFINITE);
+			ReleaseThread(thread);
+
+			ReleaseCancel(p.Cancel);
+
+			Print("Stop ok.\n");
+
+			CloseEth(eth);
+		}
 	}
+
+	FreeEth();
+	FreeCedar();
+	FreeMayaqua();
 
 	return 0;
 }

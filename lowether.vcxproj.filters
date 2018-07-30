@@ -24,30 +24,30 @@
     <ClCompile Include="nativelib\nativelib_src\nativelib.c">
       <Filter>Source Files\nativelib</Filter>
     </ClCompile>
-    <ClCompile Include="nativelib\nativelib_src\srclib_win32.cpp">
-      <Filter>Source Files\nativelib</Filter>
-    </ClCompile>
-    <ClCompile Include="lowether.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="temp.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="nativelib\nativelib_src\nativelib_win32.cpp">
+      <Filter>Source Files\nativelib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="nativelib\nativelib_src\nativelib.h">
       <Filter>Header Files\nativelib</Filter>
     </ClInclude>
-    <ClInclude Include="project.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="lowether.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="project_types.h">
+    <ClInclude Include="temp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="temp.h">
+    <ClInclude Include="lowether_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
