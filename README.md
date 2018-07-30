@@ -1,7 +1,7 @@
 IPA-DN-LowEtherSampleApp ƒAƒvƒŠƒP[ƒVƒ‡ƒ“
 Linux ã‚Å‚Ì’áƒŒƒxƒ‹ Ethernet ƒtƒŒ[ƒ€‚Ì‘—ŽóM‚ÌƒTƒ“ƒvƒ‹
 
-¡ €”õ
+# €”õ
 Linux ã‚Å gcc “™‚Ìƒrƒ‹ƒhƒc[ƒ‹‚¨‚æ‚Ñ•K—v‚Èƒ‰ƒCƒuƒ‰ƒŠ‚ðˆÈ‰º‚Ì‚æ‚¤‚ÉƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B
 
 E CentOS ‚Ìê‡
@@ -11,12 +11,12 @@ Linux ã‚Å gcc “™‚Ìƒrƒ‹ƒhƒc[ƒ‹‚¨‚æ‚Ñ•K—v‚Èƒ‰ƒCƒuƒ‰ƒŠ‚ðˆÈ‰º‚Ì‚æ‚¤‚ÉƒCƒ“ƒXƒg[ƒ‹‚
 E Ubuntu, Debian ‚Ìê‡
 `# apt-get -y install build-essential libncurses5-dev libreadline-dev libssl-dev openssl git`
 
-¡ ƒTƒ“ƒvƒ‹ƒ\[ƒXƒR[ƒh‚ÌŽæ“¾
+# ƒTƒ“ƒvƒ‹ƒ\[ƒXƒR[ƒh‚ÌŽæ“¾
 Git ‚©‚çˆÈ‰º‚Ì‚Æ‚¨‚èŽæ“¾‚µ‚Ä‚­‚¾‚³‚¢B
 
 `# git clone --recursive https://github.com/IPA-CyberLab/IPA-DN-LowEtherSampleApp.git`
 
-¡ ƒTƒ“ƒvƒ‹ƒ\[ƒXƒR[ƒh‚Ìƒrƒ‹ƒh
+# ƒTƒ“ƒvƒ‹ƒ\[ƒXƒR[ƒh‚Ìƒrƒ‹ƒh
 Git ‚ÅŽæ“¾‚µ‚½ƒfƒBƒŒƒNƒgƒŠ‚ÉˆÚ“®‚µ‚Ü‚·B
 `# cd IPA-DN-LowEtherSampleApp`
 
@@ -26,7 +26,7 @@ Git ‚ÅŽæ“¾‚µ‚½ƒfƒBƒŒƒNƒgƒŠ‚ÉˆÚ“®‚µ‚Ü‚·B
 bin/lowether ‚Æ‚¢‚¤ŽÀs‰Â”\ƒtƒ@ƒCƒ‹‚ª¶¬‚³‚ê‚½‚±‚Æ‚ðŠm”F‚µ‚Ü‚·B
 `# ls -la bin/lowether`
 
-¡ ƒTƒ“ƒvƒ‹‚ÌŽÀs
+# ƒTƒ“ƒvƒ‹‚ÌŽÀs
 ‚Ü‚¸ˆø”‚ð•t‚¯‚¸‚É‹N“®‚µ‚Ä‚Ý‚Ü‚·B
 
     # bin/lowether
@@ -53,7 +53,7 @@ Ethernet ƒtƒŒ[ƒ€‚ðŽóM‚µ‚½‚çA
 
 `[Tick: 2053] [SEND 42 bytes] FF FF FF FF ... (16 iƒ_ƒ“ƒv)`
 
-¡ ‚±‚ÌƒvƒƒOƒ‰ƒ€‚Ì‰ðà
+# ‚±‚ÌƒvƒƒOƒ‰ƒ€‚Ì‰ðà
 main.c ‚É‚·‚×‚Ä‚Ìd—v‚Èˆ—‚ª‹LÚ‚³‚ê‚Ä‚¢‚Ü‚·B
 
 main() ŠÖ”‚ÍAƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”‚ðŒŸ¸‚µAƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”‚ªŽw’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í NIC ‚Ìˆê——‚ð—ñ‹“‚µ‚Ü‚·B
@@ -63,15 +63,15 @@ main() ŠÖ”‚ÍAƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”‚ðŒŸ¸‚µAƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”‚ªŽw’è‚³‚ê‚Ä‚¢‚È‚¢
 
 u// SAMPLE: Receive Ethernet framesv‚Æ‹LÚ‚³‚ê‚Ä‚¢‚é•”•ª‚ÌƒR[ƒh‚É‚æ‚èAV‚½‚ÈƒtƒŒ[ƒ€‚ª NIC ‚É“Í‚¢‚½‚çA‚»‚Ì“à—e‚ð•\Ž¦‚µ‚Ä‚¢‚Ü‚·B‚±‚ÌÛATCP ƒwƒbƒ_‚ðŒŸ¸‚µA‘—ŽóM‚Ì‚¢‚¸‚ê‚©‚Ìƒ|[ƒg”Ô†‚ª 22 (SSH) ‚Å‚ ‚éê‡‚Í•\Ž¦‚ð‚µ‚È‚¢‚æ‚¤‚É‚µ‚Ä‚¢‚Ü‚·B‚»‚Ì——R‚ÍA‘å’ï‚Ìê‡‚±‚ÌƒvƒƒOƒ‰ƒ€‚Í SSH ƒ^[ƒ~ƒiƒ‹Œo—R‚ÅŽÀs‚µ‚Ü‚·‚ªASSH ƒpƒPƒbƒg‚ª‰æ–Ê‚Éo—Í‚³‚ê‚æ‚¤‚Æ‚·‚é‚Æ‚»‚Ìo—Í‚ð SSH ‚Å‘—M‚·‚é‚½‚ß‚ÉV‚½‚ÈƒpƒPƒbƒg‚ª¶¬‚³‚êA‚±‚Ì–³ŒÀ‚ÌŒJ‚è•Ô‚µ‚ª”­¶‚µ‚Ä‚µ‚Ü‚¤‚½‚ßA‚±‚ê‚ð”ð‚¯‚é‚½‚ß‚É SSH ƒpƒPƒbƒg‚Í•\Ž¦‚©‚çœŠO‚·‚é‚æ‚¤‚É‚µ‚Ä‚¨‚é‚Ì‚Å‚·B
 
-¡ ƒTƒ“ƒvƒ‹‚Å‘—M‚·‚é ARP ƒpƒPƒbƒg‚É‚Â‚¢‚Ä
+# ƒTƒ“ƒvƒ‹‚Å‘—M‚·‚é ARP ƒpƒPƒbƒg‚É‚Â‚¢‚Ä
 ƒfƒtƒHƒ‹ƒg‚Å‚ÍAsrc ip: 192.168.0.1A dest ip: 192.168.0.2 ‚Ì ARP ƒŠƒNƒGƒXƒg‚ð‘—M‚·‚é‚æ‚¤‚É‚È‚Á‚Ä‚¢‚Ü‚·B
 
 ŽÀŒ±‚ðs‚È‚¤ƒlƒbƒgƒ[ƒN‚ÌŽÀî‚É‡‚í‚¹‚Ä‚­‚¾‚³‚¢B
 
-¡ VLAN ƒ^ƒO•t‚«ƒtƒŒ[ƒ€‚Ì‘—ŽóM
+# VLAN ƒ^ƒO•t‚«ƒtƒŒ[ƒ€‚Ì‘—ŽóM
 Ž©•ª‚Å VLAN ƒ^ƒO‚ð•t‚¯‚é‚±‚Æ‚É‚æ‚èA•¨— NIC ‚©‚çAIEEE802.1Q VLAN ƒ^ƒO•t‚«ƒtƒŒ[ƒ€‚ð‘—ŽóM‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-¡ VM ã‚Å“®ì‚³‚¹‚éê‡‚Ì’ˆÓŽ–€
+# VM ã‚Å“®ì‚³‚¹‚éê‡‚Ì’ˆÓŽ–€
 ‘—MŒ³ MAC ƒAƒhƒŒƒX‚ð“K“–‚É—”‚Å¶¬‚µ‚Ä‚¢‚é‚½‚ßAVM ‚ÌƒzƒXƒgã‚ÌÝ’è‚ÅA
 E Promiscuous ƒ‚[ƒh‚ð‹–‰Â‚·‚é
 E ”­MŒ³ MAC ƒAƒhƒŒƒX‚Ì‹U‘•‚ð‹–‰Â‚·‚é
@@ -79,10 +79,10 @@ main() ŠÖ”‚ÍAƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”‚ðŒŸ¸‚µAƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”‚ªŽw’è‚³‚ê‚Ä‚¢‚È‚¢
 Hyper-VAVMware ESXi ‚Æ‚àã‹L‚Ì‚æ‚¤‚ÈÝ’è‚ª‰Â”\‚Å‚·‚Ì‚ÅA•K‚¸Ý’è‚ð‚µ‚Ä—˜—p‚µ‚Ä‚­‚¾‚³‚¢B
 ‚»‚Ì‚æ‚¤‚É‚µ‚È‚¯‚ê‚ÎAƒpƒPƒbƒg‚Ì‘—ŽóM‚ª‚¤‚Ü‚­‚Å‚«‚Ü‚¹‚ñB
 
-¡ ’ˆÓŽ–€
+# ’ˆÓŽ–€
 –{ƒvƒƒOƒ‰ƒ€‚ÍAŽÀŒ±—p‚Ìƒlƒbƒgƒ[ƒN‚Å‚Ì‚Ý“®ì‚³‚¹‚Ä‚­‚¾‚³‚¢B
 –{ƒvƒƒOƒ‰ƒ€‚ð•s—pˆÓ‚É“®ì‚³‚¹‚½‚èAFX‘‚«Š·‚¦‚½‚è‚·‚é‚ÆAˆê”Ê“I‚Èƒlƒbƒgƒ[ƒN‚ð–ƒáƒ‚³‚¹‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·BŒ»—pƒlƒbƒgƒ[ƒN‚Å‚ÍŽg—p‚µ‚È‚¢‚Å‚­‚¾‚³‚¢B
-‚Ü‚½A¶‚Ì TCP/IP ƒpƒPƒbƒg‚ðƒCƒ“ƒ^[ƒlƒbƒg‚É‘Î‚µ‚ÄŽ©—R‚É‘g—§‚Ä‚Ä‘—ŽóM‚Å‚«‚Ü‚·‚ªAƒCƒ“ƒ^[ƒlƒbƒg‚É‘Î‚µ‚Ä—LŠQ‚ÈƒpƒPƒbƒg‚Í‘—M‚µ‚È‚¢‚æ‚¤‚É‚µ‚Ä‚­‚¾‚³‚¢B(‘—M‚ð‚·‚é‚Æ–â‘è‚É‚È‚è‚Ü‚·B)
+‚Ü‚½A¶‚Ì TCP/IP ƒpƒPƒbƒg‚ðƒCƒ“ƒ^[ƒlƒbƒg‚É‘Î‚µ‚ÄŽ©—R‚É‘g—§‚Ä‚Ä‘—ŽóM‚Å‚«‚Ü‚·‚ªAƒCƒ“ƒ^[ƒlƒbƒg‚É‘Î‚µ‚Ä—LŠQ‚ÈƒpƒPƒbƒg‚Í‘—M‚µ‚È‚¢‚æ‚¤‚É‚µ‚Ä‚­‚¾‚³‚¢B(‘—M‚ð‚·‚é‚Æ‘å•Ï–â‘è‚É‚È‚è‚Ü‚·B)
 
 2018-07-31 “o
 
