@@ -5,10 +5,13 @@ Linux 上での低レベル Ethernet フレームの送受信のサンプル
 Linux 上で gcc 等のビルドツールおよび必要なライブラリを以下のようにインストールしてください。
 
 ・ CentOS の場合
+
 `# yum -y groupinstall "Development Tools"`
+
 `# yum -y install readline-devel ncurses-devel openssl-devel git`
 
 ・ Ubuntu, Debian の場合
+
 `# apt-get -y install build-essential libncurses5-dev libreadline-dev libssl-dev openssl git`
 
 # サンプルソースコードの取得
@@ -18,12 +21,15 @@ Git から以下のとおり取得してください。
 
 # サンプルソースコードのビルド
 Git で取得したディレクトリに移動します。
+
 `# cd IPA-DN-LowEtherSampleApp`
 
 ビルドします。
+
 `# make`
 
 bin/lowether という実行可能ファイルが生成されたことを確認します。
+
 `# ls -la bin/lowether`
 
 # サンプルの実行
@@ -38,6 +44,7 @@ bin/lowether という実行可能ファイルが生成されたことを確認します。
 上記のように、システム上で利用可能な Ethernet アダプタの名前一覧が表示されます。上記の例では、「eth0」という 1 枚の NIC が存在しています。
 
 次に引数を付けて実行します。
+
 `# bin/lowether eth0`
 
 これでプログラムの動作が開始されます。
