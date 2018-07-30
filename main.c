@@ -107,17 +107,21 @@ void main_loop_thread(THREAD *thread, void *param)
 				// Parse the Ethernet frame
 				PKT *pkt = ParsePacket(recv_packet, size);
 
-				if (pkt->TypeL4 == L4_TCP)
+				if (pkt != NULL)
 				{
-					if (pkt->L4.TCPHeader->SrcPort == Endian16(22) ||
-						pkt->L4.TCPHeader->DstPort == Endian16(22))
+					if (pkt->TypeL4 == L4_TCP)
 					{
-						// This is TCP SSH packet
-						is_ssh = true;
+						if (pkt->L4.TCPHeader->SrcPort == Endian16(22) ||
+							pkt->L4.TCPHeader->DstPort == Endian16(22))
+						{
+							// This is TCP SSH packet
+							is_ssh = true;
+							return;
+						}
 					}
-				}
 
-				FreePacket(pkt); // Free parsed packet data
+					FreePacket(pkt); // Free parsed packet data
+				}
 
 				// Do not print SSH packet because it might cause infinite loop when
 				// the program is running through a SSH terminal session.
@@ -125,8 +129,9 @@ void main_loop_thread(THREAD *thread, void *param)
 				{
 					BinToStrEx(tmpstr, sizeof(tmpstr), recv_packet, size);
 					Print("[Tick: %I64u] [RECV %u bytes] %s\n", now, size, tmpstr);
-					Free(recv_packet);
 				}
+
+				Free(recv_packet);
 			}
 		}
 	}
