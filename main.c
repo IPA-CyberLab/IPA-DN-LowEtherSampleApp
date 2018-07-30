@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
 	Zero(if_name, sizeof(if_name));
 
 	if (argc >= 2) StrCpy(if_name, sizeof(if_name), argv[1]);
-	StrCpy(if_name, sizeof(if_name), "Intel(R) PRO/1000 PT Quad Port LP Server Adapter (2) (ID=3073167373)");
+	
 	if (IsEmptyStr(if_name))
 	{
 		// Print the list of Ethernet adapters on the system currently running
@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
 		if (eth == NULL)
 		{
 			Print("Failed to open the device '%s'.\n", if_name);
-			Print("Please ensure that this process is running with the root privilege.");
+			Print("Please ensure that this process is running with the root privilege.\n");
 		}
 		else
 		{
